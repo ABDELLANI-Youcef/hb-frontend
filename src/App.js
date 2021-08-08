@@ -1,13 +1,10 @@
 import './App.css';
-import Board from "./container/Board";
+import Board from './container/Board';
 
-const App = () => {
-  
-  return (
-    <div>
-      <Board/>
-    </div>
-  );
-}
+const App = () => (
+  <div>
+    <Board />
+  </div>
+);
 
 export default App;
