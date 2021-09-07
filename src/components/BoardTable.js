@@ -1,12 +1,15 @@
 import Proptypes from 'prop-types';
 import styles from '../styles/Boards.module.css';
 
-const BoardTable = ({ lines, columns }) => {
+const BoardTable = ({ board }) => {
+  const lines = board.length;
+  const columns = board[0].length;
+
   const tbody = [];
   for (let i = 0; i < lines; i += 1) {
     const cells = [];
     for (let j = 0; j < columns; j += 1) {
-      cells.push(<td className={styles.cell} key={`cell ${i} ${j}`} />);
+      cells.push(<td className={styles.cell} key={`cell ${i} ${j}`}>{board[i][j]}</td>);
     }
     const row = <tr key={`row ${i}`}>{cells}</tr>;
     tbody.push(row);
@@ -20,24 +23,13 @@ const BoardTable = ({ lines, columns }) => {
   );
   return (
     <div>
-      <p>
-        This board has
-        {lines}
-        {' '}
-        lines and
-        {columns}
-        {' '}
-        columns
-        {' '}
-      </p>
       {table}
     </div>
   );
 };
 
 BoardTable.propTypes = {
-  lines: Proptypes.number.isRequired,
-  columns: Proptypes.number.isRequired,
+  board: Proptypes.arrayOf(Proptypes.any).isRequired,
 };
 
 export default BoardTable;
