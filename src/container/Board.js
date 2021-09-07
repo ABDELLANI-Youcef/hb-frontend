@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import BoardTable from '../components/BoardTable';
-import { initBoard } from '../logic/board';
+import { initBoard, movePlayer } from '../logic/board';
 
 function useKeyPress(targetKey) {
   const [keyPressed, setKeyPressed] = useState(false);
@@ -48,6 +48,8 @@ function Board() {
     const numC = prompt('Insert the number of columns:');
     setColumns(parseInt(numC, 10));
     setBoard(initBoard(numL, numC));
+    setPx(Math.floor(numL / 2));
+    setPy(Math.floor(numC / 2));
     setDesign(true);
   };
   useEffect(() => {
@@ -57,14 +59,22 @@ function Board() {
   const table = design ? (<BoardTable board={board} />) : null;
   /** try to add listner */
   useEffect(() => {
+    let direction;
     if (px > 0 && ArrowUp) {
+      direction = 'up';
       setPx(px - 1);
     } else if (px < lines - 1 && ArrowDown) {
+      direction = 'down';
       setPx(px + 1);
     } else if (py > 0 && ArrowLeft) {
+      direction = 'left';
       setPy(py - 1);
     } else if (py < columns - 1 && ArrowRight) {
+      direction = 'right';
       setPy(py + 1);
+    }
+    if (design) {
+      setBoard(movePlayer(board, px, py, direction));
     }
   }, [ArrowUp, ArrowDown, ArrowLeft, ArrowRight]);
   /** end of try
@@ -73,6 +83,17 @@ function Board() {
   return (
 
     <>
+      {/* {table} */}
+      <div>
+        <h1>Feel free to type!</h1>
+        <blockquote>
+          px ==
+          {px}
+          {' '}
+          py ==
+          {py}
+        </blockquote>
+      </div>
       {table}
     </>
 

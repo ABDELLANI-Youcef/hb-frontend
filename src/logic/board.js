@@ -25,8 +25,30 @@ const initBoard = (lines, columns) => {
   return board;
 };
 // board, px, py, direction, number
-const movePlayer = () => {
-
+const movePlayer = (board, px, py, direction) => {
+  const board2 = board.map((arr) => arr.slice());
+  let qx = px;
+  let qy = py;
+  switch (direction) {
+    case 'left':
+      qy -= 1;
+      break;
+    case 'right':
+      qy += 1;
+      break;
+    case 'up':
+      qx -= 1;
+      break;
+    case 'down':
+      qx += 1;
+      break;
+    default:
+      break;
+  }
+  board2[px][py] = '';
+  // if the board2[qx][qy] === 'm' increment score
+  board2[qx][qy] = 'P';
+  return board2;
 };
 
 export { initBoard, movePlayer };
