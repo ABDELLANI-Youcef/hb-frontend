@@ -8,9 +8,7 @@ td {
 .cell {
   width: 30px;
   height: 30px;
-  display: flexbox;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
 }
 
 img {
