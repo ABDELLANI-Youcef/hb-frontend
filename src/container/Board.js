@@ -16,7 +16,7 @@ function useKeyPress(targetKey) {
       setKeyPressed(false);
     }
   };
-  // Add event listeners
+
   useEffect(() => {
     window.addEventListener('keydown', downHandler);
     window.addEventListener('keyup', upHandler);
@@ -40,6 +40,8 @@ function Board() {
   const [design, setDesign] = useState(false);
   const [px, setPx] = useState(0);
   const [py, setPy] = useState(0);
+  const [target, setTarget] = useState(0);
+  const [steps, setSteps] = useState(0);
 
   const boardSize = () => {
     alert('You should save the princess');
@@ -47,17 +49,19 @@ function Board() {
     setLines(parseInt(numL, 10));
     const numC = prompt('Insert the number of columns:');
     setColumns(parseInt(numC, 10));
-    setBoard(initBoard(numL, numC));
+    const status = initBoard(numL, numC, target);
+    setBoard(status.board);
     setPx(Math.floor(numL / 2));
     setPy(Math.floor(numC / 2));
     setDesign(true);
+    setTarget(status.target);
   };
   useEffect(() => {
     boardSize();
   }, []);
-  // (<p>This board has {lines} lines and {columns} columns </p>)
-  const table = design ? (<BoardTable board={board} />) : null;
-  /** try to add listner */
+
+  const table = design ? <BoardTable board={board} /> : null;
+
   useEffect(() => {
     let direction;
     if (px > 0 && ArrowUp) {
@@ -73,30 +77,23 @@ function Board() {
       direction = 'right';
       setPy(py + 1);
     }
-    if (design) {
-      setBoard(movePlayer(board, px, py, direction));
+    if (design && direction) {
+      if (target > 0) {
+        setSteps((steps) => steps + 1);
+      }
+      const newStatus = movePlayer(board, px, py, direction, target);
+      setBoard(newStatus.board);
+      setTarget(newStatus.target);
+      if (newStatus.target === 0) {
+        alert(`Game Over. total moves to save princess: ${steps}`);
+      }
     }
   }, [ArrowUp, ArrowDown, ArrowLeft, ArrowRight]);
-  /** end of try
-   * ====================================
-   */
-  return (
 
+  return (
     <>
-      {/* {table} */}
-      <div>
-        <h1>Feel free to type!</h1>
-        <blockquote>
-          px ==
-          {px}
-          {' '}
-          py ==
-          {py}
-        </blockquote>
-      </div>
       {table}
     </>
-
   );
 }
 export default Board;

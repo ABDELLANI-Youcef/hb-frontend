@@ -4,6 +4,14 @@ table, th, td {
 }
 
 .cell {
+  width: 30px;
+  height: 30px;
+  display: flexbox;
+  justify-content: center;
+  align-items: center;
+}
+
+img {
   width: 20px;
   height: 20px;
 }

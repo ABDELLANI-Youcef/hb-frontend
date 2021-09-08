@@ -11,6 +11,7 @@ const initBoard = (lines, columns) => {
   }
 
   let numMash = Math.floor(Math.sqrt(lines * columns));
+  const target = numMash;
   const px = Math.floor(lines / 2);
   const py = Math.floor(columns / 2);
   board[px][py] = 'P';
@@ -22,10 +23,10 @@ const initBoard = (lines, columns) => {
       numMash -= 1;
     }
   }
-  return board;
+  return { board, target };
 };
 // board, px, py, direction, number
-const movePlayer = (board, px, py, direction) => {
+const movePlayer = (board, px, py, direction, target) => {
   const board2 = board.map((arr) => arr.slice());
   let qx = px;
   let qy = py;
@@ -47,8 +48,9 @@ const movePlayer = (board, px, py, direction) => {
   }
   board2[px][py] = '';
   // if the board2[qx][qy] === 'm' increment score
+  const target2 = board2[qx][qy] === 'm' ? target - 1 : target;
   board2[qx][qy] = 'P';
-  return board2;
+  return { board: board2, target: target2 };
 };
 
 export { initBoard, movePlayer };
